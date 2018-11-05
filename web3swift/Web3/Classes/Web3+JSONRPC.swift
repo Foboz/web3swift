@@ -27,7 +27,7 @@ public struct JSONRPCrequest: Encodable {
     var jsonrpc: String = "2.0"
     var method: JSONRPCmethod?
     var params: JSONRPCparams?
-    var id: UInt64 = Counter.increment()
+    public var id: String = ""
     
     enum CodingKeys: String, CodingKey {
         case jsonrpc
@@ -67,7 +67,7 @@ public struct JSONRPCrequestBatch: Encodable {
 
 /// JSON RPC response structure for serialization and deserialization purposes.
 public struct JSONRPCresponse: Decodable{
-    public var id: Int
+    public var id: String
     public var jsonrpc = "2.0"
     public var result: Any?
     public var error: ErrorMessage?
@@ -80,7 +80,7 @@ public struct JSONRPCresponse: Decodable{
         case error = "error"
     }
     
-    public init(id: Int, jsonrpc: String, result: Any?, error: ErrorMessage?) {
+    public init(id: String, jsonrpc: String, result: Any?, error: ErrorMessage?) {
         self.id = id
         self.jsonrpc = jsonrpc
         self.result = result
@@ -112,7 +112,7 @@ public struct JSONRPCresponse: Decodable{
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: JSONRPCresponseKeys.self)
-        let id: Int = try container.decode(Int.self, forKey: .id)
+        let id: String = try container.decode(String.self, forKey: .id)
         let jsonrpc: String = try container.decode(String.self, forKey: .jsonrpc)
         let errorMessage = try container.decodeIfPresent(ErrorMessage.self, forKey: .error)
         if errorMessage != nil {
