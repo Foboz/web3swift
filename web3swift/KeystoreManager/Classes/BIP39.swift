@@ -72,7 +72,7 @@ public enum BIP39Language {
 public class BIP39 {
     
     static public func generateMnemonicsFromEntropy(entropy: Data, language: BIP39Language = BIP39Language.english) -> String?  {
-        guard entropy.count >= 16, entropy.count & 4 == 0 else {return nil}
+        guard entropy.count >= 16, entropy.count <= 32, entropy.count % 4 == 0 else {return nil}
         let checksum = entropy.sha256()
         let checksumBits = entropy.count*8/32
         var fullEntropy = Data()
@@ -99,7 +99,7 @@ public class BIP39 {
     
     static public func mnemonicsToEntropy(_ mnemonics: String, language: BIP39Language = BIP39Language.english) -> Data? {
         let wordList = mnemonics.components(separatedBy: " ")
-        guard wordList.count >= 12 && wordList.count % 4 == 0 else {return nil}
+        guard wordList.count >= 12 && wordList.count % 3 == 0 else {return nil}
         var bitString = ""
         for word in wordList {
             let idx = language.words.index(of: word)
