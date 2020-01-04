@@ -335,6 +335,7 @@ public struct EthereumTransaction: CustomStringConvertible {
         }
         let pars = JSONRPCparams(params: params)
         request.params = pars
+        request.id = UUID().uuidString
         if !request.isValid {return nil}
         return request
     }
