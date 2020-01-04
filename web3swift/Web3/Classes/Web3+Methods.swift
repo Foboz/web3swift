@@ -72,6 +72,7 @@ public enum JSONRPCmethod: String, Encodable {
 public struct JSONRPCRequestFabric {
     public static func prepareRequest(_ method: JSONRPCmethod, parameters: [Encodable]) -> JSONRPCrequest {
         var request = JSONRPCrequest()
+        request.id = UUID().uuidString
         request.method = method
         let pars = JSONRPCparams(params: parameters)
         request.params = pars
